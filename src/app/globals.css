@@ -105,6 +105,23 @@ body {
   }
 }
 
+/* Exportação semântica de relatórios via impressão/PDF (RNF16). */
+@media print {
+  header,
+  nav,
+  .skip-link,
+  [data-no-print] {
+    display: none !important;
+  }
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+  main {
+    padding: 0 !important;
+  }
+}
+
 /* Link "pular para o conteúdo" (RNF12). */
 .skip-link {
   position: absolute;

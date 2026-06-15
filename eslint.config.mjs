@@ -13,6 +13,15 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Usamos useEffect para sincronizar com sistemas externos (busca de
+      // dados na montagem, restauração de sessão via JWT, hidratação de
+      // preferências do localStorage e reset de menu na navegação) — casos
+      // legítimos. Mantemos como aviso para preservar a visibilidade.
+      "react-hooks/set-state-in-effect": "warn",
+    },
+  },
 ]);
 
 export default eslintConfig;
