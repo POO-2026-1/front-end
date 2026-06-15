@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/*
+ * Sistema de design do Campus Virtual.
+ *
+ * Acessibilidade:
+ *  - RNF13: contraste mínimo 4,5:1 entre texto e fundo nos dois temas.
+ *  - RNF20: tema claro não usa branco puro como fundo (conforto visual).
+ *  - RNF14: tipografia em rem escala com a fonte raiz (100%–400%).
+ *  - RNF15: respeita prefers-reduced-motion (sem transições "gatilho").
+ */
+
+:root {
+  /* Tema claro (padrão) — fundo levemente acinzentado (RNF20) */
+  --bg: #eef1f5;
+  --surface: #fafbfc;
+  --surface-2: #f0f2f6;
+  --border: #c9d0da;
+  --text: #1b1f27;
+  --text-muted: #4b5563;
+  --primary: #1d4ed8;
+  --primary-hover: #1e40af;
+  --primary-fg: #ffffff;
+  --danger: #b42318;
+  --danger-bg: #fdecea;
+  --success: #15803d;
+  --success-bg: #e9f6ee;
+  --warning: #92400e;
+  --warning-bg: #fdf3e3;
+  --info: #1e40af;
+  --info-bg: #e7eefb;
+  --focus: #1d4ed8;
+}
+
+:root[data-theme="escuro"] {
+  --bg: #14171c;
+  --surface: #1d2127;
+  --surface-2: #262b33;
+  --border: #3a414c;
+  --text: #eceef2;
+  --text-muted: #aab2c0;
+  --primary: #5b8def;
+  --primary-hover: #7aa3f5;
+  --primary-fg: #0b0e13;
+  --danger: #f4a59d;
+  --danger-bg: #3a1d1a;
+  --success: #7ad19a;
+  --success-bg: #16301f;
+  --warning: #e8c07d;
+  --warning-bg: #352a16;
+  --info: #93b4f5;
+  --info-bg: #1a2438;
+  --focus: #7aa3f5;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-fg: var(--primary-fg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-focus: var(--focus);
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+html {
+  /* Base alterada via JS para o ajuste de fonte de 100% a 400% (RF08/RNF14). */
+  font-size: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* Foco visível e consistente para navegação por teclado (RNF12). */
+*:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* RNF15 — sem animações bruscas para usuários fotossensíveis. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Exportação semântica de relatórios via impressão/PDF (RNF16). */
+@media print {
+  header,
+  nav,
+  .skip-link,
+  [data-no-print] {
+    display: none !important;
+  }
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+  main {
+    padding: 0 !important;
+  }
+}
+
+/* Link "pular para o conteúdo" (RNF12). */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--primary);
+  color: var(--primary-fg);
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
