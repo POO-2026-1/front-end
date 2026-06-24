@@ -19,7 +19,7 @@ import {
   Textarea,
 } from "@/components/ui";
 import { ApiError } from "@/lib/api/client";
-import { ATIVIDADE_TIPO_LABEL, formatDateTime } from "@/lib/format";
+import { ATIVIDADE_TIPO_LABEL, formatDateTime, toLocalDateTime } from "@/lib/format";
 import type { AtividadeRequest, AtividadeResponse, Role } from "@/lib/api/types";
 
 const MAX_BYTES = 20 * 1024 * 1024; // 20 MB (RF10)
@@ -277,7 +277,7 @@ function AtividadeFormModal({
     setSalvando(true);
     const payload: AtividadeRequest = {
       ...form,
-      prazo: form.prazo ? new Date(form.prazo).toISOString() : undefined,
+      prazo: toLocalDateTime(form.prazo),
     };
     try {
       if (editando) await atividadesApi.atualizar(atividade.id, payload);

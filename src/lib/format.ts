@@ -23,6 +23,19 @@ export function formatDateTime(iso?: string | null): string {
   return d.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
 }
 
+/**
+ * Converte o valor de um `<input type="datetime-local">` (horário de parede,
+ * sem fuso) em ISO LocalDateTime `YYYY-MM-DDTHH:mm:ss`, sem conversão de fuso.
+ *
+ * O back-end usa `LocalDateTime` (sem fuso); usar `new Date(v).toISOString()`
+ * somava o offset do navegador (UTC), deslocando o horário em +3h (UTC-3).
+ */
+export function toLocalDateTime(value?: string | null): string | undefined {
+  if (!value) return undefined;
+  // "2026-06-24T18:52" -> "2026-06-24T18:52:00" (garante os segundos).
+  return value.length === 16 ? `${value}:00` : value;
+}
+
 export function formatPercent(value?: number | null, digits = 1): string {
   if (value === undefined || value === null || Number.isNaN(value)) return "—";
   return `${value.toFixed(digits)}%`;
