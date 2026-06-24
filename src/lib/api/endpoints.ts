@@ -131,7 +131,7 @@ export const atividadesApi = {
     api.get<SubmissaoResponse[]>(`/api/atividades/${atividadeId}/submissoes`),
   enviarSubmissao: (atividadeId: string, arquivo: File) => {
     const form = new FormData();
-    form.append("arquivo", arquivo);
+    form.append("file", arquivo); // o back-end espera o campo multipart "file"
     return api.upload<SubmissaoResponse>(`/api/atividades/${atividadeId}/submissoes`, form);
   },
 
