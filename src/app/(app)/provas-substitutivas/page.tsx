@@ -22,7 +22,7 @@ import {
   Spinner,
   Textarea,
 } from "@/components/ui";
-import { PROVA_SUBST_STATUS_LABEL, formatDateTime } from "@/lib/format";
+import { PROVA_SUBST_STATUS_LABEL, formatDateTime, toLocalDateTime } from "@/lib/format";
 import { ApiError } from "@/lib/api/client";
 import type {
   ProvaSubstitutivaResponse,
@@ -298,7 +298,7 @@ function DecidirModal({
       await provasSubstitutivasApi.decidir(prova.id, {
         status,
         parecer,
-        agendadaPara: agendadaPara ? new Date(agendadaPara).toISOString() : undefined,
+        agendadaPara: toLocalDateTime(agendadaPara),
       });
       toast.success("Decisão registrada.");
       onSaved();

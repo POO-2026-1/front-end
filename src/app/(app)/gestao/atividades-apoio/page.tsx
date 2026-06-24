@@ -17,7 +17,7 @@ import {
   Spinner,
   Textarea,
 } from "@/components/ui";
-import { formatDateTime } from "@/lib/format";
+import { formatDateTime, toLocalDateTime } from "@/lib/format";
 import { ApiError } from "@/lib/api/client";
 
 /** RF35 — Agendamento de atividades de acolhimento e nivelamento. */
@@ -96,7 +96,7 @@ function ApoioFormModal({ onClose, onSaved }: { onClose: () => void; onSaved: ()
         descricao,
         disciplinaId: disciplinaId || undefined,
         publicoAlvo: publicoAlvo || undefined,
-        agendadaPara: new Date(agendadaPara).toISOString(),
+        agendadaPara: toLocalDateTime(agendadaPara)!, // campo obrigatório (required)
       });
       onSaved();
     } catch (err) {
