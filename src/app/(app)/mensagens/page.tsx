@@ -11,6 +11,7 @@ import {
   Card,
   EmptyState,
   ErrorState,
+  Input,
   PageHeader,
   Select,
   Spinner,
@@ -199,8 +200,12 @@ function NovaMensagemModal({
   const toast = useToast();
   const [contatos, setContatos] = useState<UsuarioResumoResponse[]>([]);
   const [destinatarioId, setDestinatarioId] = useState("");
+  const [destinatarioEmail, setDestinatarioEmail] = useState("");
   const [conteudo, setConteudo] = useState("");
   const [enviando, setEnviando] = useState(false);
+
+  // A listagem de usuários é restrita ao GESTOR; demais papéis usam o e-mail.
+  const podeListar = contatos.length > 0;
 
   useEffect(() => {
     // Tenta carregar a lista de usuários (permitido conforme o papel).
@@ -214,10 +219,20 @@ function NovaMensagemModal({
     e.preventDefault();
     setEnviando(true);
     try {
-      await mensagensApi.enviar({ destinatarioId, conteudo });
-      const nome = contatos.find((c) => c.id === destinatarioId)?.nome ?? "Conversa";
+      const msg = await mensagensApi.enviar(
+        podeListar
+          ? { destinatarioId, conteudo }
+          : { destinatarioEmail: destinatarioEmail.trim(), conteudo },
+      );
+      // O back-end resolve o destinatário e o devolve na resposta — usamos isso
+      // para abrir a conversa, já que pelo e-mail não temos o ID localmente.
+      const id = msg.destinatario?.id ?? destinatarioId;
+      const nome =
+        msg.destinatario?.nome ??
+        contatos.find((c) => c.id === destinatarioId)?.nome ??
+        destinatarioEmail.trim();
       toast.success("Mensagem enviada.");
-      onEnviado({ id: destinatarioId, nome });
+      onEnviado({ id, nome });
     } catch (err) {
       toast.error(err instanceof ApiError ? err.message : "Falha ao enviar mensagem.");
     } finally {
@@ -228,7 +243,7 @@ function NovaMensagemModal({
   return (
     <Modal open title="Nova mensagem" onClose={onClose}>
       <form onSubmit={submit} className="flex flex-col gap-4">
-        {contatos.length > 0 ? (
+        {podeListar ? (
           <Select
             label="Destinatário"
             value={destinatarioId}
@@ -243,12 +258,13 @@ function NovaMensagemModal({
             ))}
           </Select>
         ) : (
-          <Textarea
-            label="ID do destinatário"
-            hint="Informe o identificador do destinatário."
-            rows={1}
-            value={destinatarioId}
-            onChange={(e) => setDestinatarioId(e.target.value)}
+          <Input
+            label="E-mail do destinatário"
+            type="email"
+            hint="Informe o e-mail do professor ou aluno."
+            placeholder="nome@discente.ufg.br"
+            value={destinatarioEmail}
+            onChange={(e) => setDestinatarioEmail(e.target.value)}
             required
           />
         )}

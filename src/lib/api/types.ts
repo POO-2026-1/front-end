@@ -342,7 +342,10 @@ export interface MensagemForumRequest {
 }
 
 export interface MensagemPrivadaRequest {
-  destinatarioId: string;
+  /** Identifica o destinatário pelo ID (uso interno, ex.: responder uma conversa). */
+  destinatarioId?: string;
+  /** Alternativa pública ao ID: o destinatário é resolvido pelo e-mail no back-end. */
+  destinatarioEmail?: string;
   disciplinaId?: string;
   conteudo: string;
 }
