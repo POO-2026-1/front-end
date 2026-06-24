@@ -236,7 +236,7 @@ export const materiaisApi = {
   remover: (id: string) => api.delete<void>(`/api/materiais/${id}`),
   criar: (params: CriarMaterialParams, arquivo?: File) => {
     const form = new FormData();
-    if (arquivo) form.append("arquivo", arquivo);
+    if (arquivo) form.append("file", arquivo); // o back-end espera o campo multipart "file"
     return api.upload<MaterialResponse>("/api/materiais", form, {
       disciplinaId: params.disciplinaId,
       titulo: params.titulo,
