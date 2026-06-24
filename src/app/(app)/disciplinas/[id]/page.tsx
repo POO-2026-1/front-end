@@ -11,6 +11,7 @@ import { MateriaisSection } from "@/components/disciplina/MateriaisSection";
 import { FrequenciaSection } from "@/components/disciplina/FrequenciaSection";
 import { ForunsSection } from "@/components/disciplina/ForunsSection";
 import { MatriculasSection } from "@/components/disciplina/MatriculasSection";
+import { TurmaSection } from "@/components/disciplina/TurmaSection";
 import type { Role } from "@/lib/api/types";
 
 interface Aba {
@@ -24,6 +25,7 @@ const ABAS: Aba[] = [
   { id: "materiais", label: "Materiais", roles: ["ALUNO", "PROFESSOR", "GESTOR"] },
   { id: "frequencia", label: "Frequência", roles: ["ALUNO", "PROFESSOR", "GESTOR"] },
   { id: "foruns", label: "Fóruns", roles: ["ALUNO", "PROFESSOR", "GESTOR"] },
+  { id: "turma", label: "Turma", roles: ["ALUNO"] },
   { id: "matriculas", label: "Alunos", roles: ["PROFESSOR", "GESTOR"] },
 ];
 
@@ -92,6 +94,9 @@ export default function DisciplinaDetailPage({
         {aba === "materiais" && <MateriaisSection disciplinaId={id} role={user.role} />}
         {aba === "frequencia" && <FrequenciaSection disciplinaId={id} role={user.role} />}
         {aba === "foruns" && <ForunsSection disciplinaId={id} />}
+        {aba === "turma" && (
+          <TurmaSection disciplinaId={id} professor={disciplina.professor} />
+        )}
         {aba === "matriculas" && <MatriculasSection disciplinaId={id} />}
       </div>
     </div>
